@@ -21,7 +21,18 @@ import { ChevronDown, Search } from "lucide-react";
 
 const slideimg = ["/wicked.jpg", "/movie2.png", "/movie3.jpg"];
 
-const moviesections = [
+export type Movie = {
+  img: string;
+  rate: string;
+  title: string;
+};
+
+type MovieSection = {
+  title: string;
+  movies: Movie[];
+};
+
+const moviesections: MovieSection[] = [
   {
     title: "Upcoming",
     movies: [

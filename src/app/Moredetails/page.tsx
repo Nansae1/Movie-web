@@ -7,39 +7,61 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, Icon, Play, Search } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const movies = [
+  { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
   {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
+    img: "./dragon.jpg",
+    rate: "6.9/10",
+    title: "How To Train Your Dragon Live Action",
+  },
+  { img: "./alien.jpg", rate: "6.9/10", title: "Alien Romulus" },
+  { img: "./ashes.jpg", rate: "6.9/10", title: "From the Ashes" },
+  {
+    img: "./spacedog.jpg",
+    rate: "6.9/10",
+    title: "Space Dogg",
   },
   {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
+    img: "./Slide 4_3 - 1.png",
+    rate: "6.9/10",
+    title: "The Order",
   },
   {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
+    img: "./Slide 4_3 - 1 (1).png",
+    rate: "6.9/10",
+    title: "Y2K",
   },
   {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
+    img: "./Slide 4_3 - 1 (2).png",
+    rate: "6.9/10",
+    title: "Solo Leveling: ReAwakening",
   },
   {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
+    img: "./Slide 4_3 - 1 (3).png",
+    rate: "6.9/10",
+    title: "Get Away",
+  },
+  {
+    img: "./Slide 4_3 - 1 (4).png",
+    rate: "6.9/10",
+    title: "Sonic the Hedgehog 3",
   },
 ];
 
 export default function Page() {
   return (
-    <div className="w-screen h-screen flex flex-col items-center">
-      <div className="flex w-full justify-between max-w-360 h-15 items-center ">
+    <div className="w-screen h-screen flex flex-col items-center gap-8">
+      <div className="flex w-full justify-between max-w-360 h-15 items-center mt-3">
         <img src="./Logo.png" className="h-5 w-23"></img>
         <div className="flex gap-3 items-center">
           <Popover>
@@ -150,95 +172,57 @@ export default function Page() {
         </div>
         <img src="./Modes.png" className="h-9 w-9"></img>
       </div>
-      <div className="flex w-full max-w-270 flex-col pt-6 gap-6">
-        <div className="flex flex-col">
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <p className="text-4xl font-semibold">Wicked</p>
-              <p>2024.11.26 · PG · 2h 40m</p>
+      <div className="flex w-full max-w-360 flex-col pt-6 gap-6">
+        <div className=" flex flex-col gap-13 my-7">
+          <div className="w-full h-244.5 flex flex-col items-center gap-8">
+            <div className="w-full max-w-360 font-semibold text-3xl">
+              Upcoming
             </div>
-            <div className="flex flex-col">
-              <p>Rating</p>
-              <div className="flex items-center">
-                <img src="./star.png" className="h-7 w-7"></img>
-                <div className="flex flex-col">
-                  <p className="text-lg">6.9/10</p>
-                  <p className="text-xs">37k</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-8 w-full max-w-270 h-107 relative">
-            <img src="./MoviePoster.png" className="h-full w-72.5"></img>
-            <img src="./wickedba.jpg" className="h-full w-190"></img>
-            <div className="flex absolute bottom-6 left-86.5 items-center gap-2">
-              <Button className="bg-white text-black">
-                <Play />
-              </Button>
-              <p className="text-white">Play trailer 2:35</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="flex gap-3">
-            <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-              Fairy Tale
-            </Badge>
-            <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-              Pop Musical
-            </Badge>
-            <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-              Fantasy
-            </Badge>
-            <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-              Musical
-            </Badge>
-            <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-              Romance
-            </Badge>
-          </div>
-          <p className="text-base text-[#09090B]">
-            Elphaba, a misunderstood young woman because of her green skin, and
-            Glinda, a popular girl, become friends at Shiz University in the
-            Land of Oz. After an encounter with the Wonderful Wizard of Oz,
-            their friendship reaches a crossroads.{" "}
-          </p>
-          <div className="flex gap-13 pb-2 border-b border-[#E4E4E7]">
-            <p className="text-base font-bold">Director</p>
-            <p>Jon M. Chu</p>
-          </div>
-          <div className="flex gap-13 pb-2 border-b border-[#E4E4E7]">
-            <p className="text-base font-bold">Writers</p>
-            <p>Winnie Holzman · Dana Fox · Gregory Maguire</p>
-          </div>
-          <div className="flex gap-13 pb-2 border-b border-[#E4E4E7]">
-            <p className="text-base font-bold">Stars</p>
-            <p>Cynthia Erivo · Ariana Grande · Jeff Goldblum</p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-8 pb-18.155">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold text-2xl">More like this</p>
-            <p>See more</p>
-          </div>
-          <div className="grid grid-cols-5 gap-8">
-            {movies.map((movie, index) => {
-              return (
-                <div
-                  key={index}
-                  className="h-93.095 bg-[#F4F4F5] flex flex-col rounded-lg gap-1"
-                >
-                  <img
-                    className="h-70.345 w-full rounded-t-lg"
-                    src={movie.img}
-                  ></img>
-                  <div className="flex flex-col mx-2">
-                    <p className="text-xs">{movie.rate}</p>
-                    <p className="text-base">{movie.title}</p>
+            <div className="grid grid-cols-5 gap-8 w-full max-w-360">
+              {movies.map((movie, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="h-109.75 bg-[#F4F4F5] flex flex-col rounded-lg gap-1"
+                  >
+                    <img
+                      className="h-85 w-full rounded-t-lg hover:grayscale-35"
+                      src={movie.img}
+                    ></img>
+                    <div className="flex flex-col mx-2">
+                      <p className="text-xs">{movie.rate}</p>
+                      <p className="text-lg">{movie.title}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+            <div className="w-full flex justify-end h-10">
+              <Pagination className="w-full flex justify-end">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious href="#" />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#" isActive>
+                      1
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#">2</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#">5</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext href="#" />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </div>
         </div>
       </div>
