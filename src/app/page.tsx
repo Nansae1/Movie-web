@@ -17,9 +17,104 @@ import { MovieSection } from "./_components/MovieSection";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, ChevronRight, Play, Search, X } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const slideimg = ["/wicked.jpg", "/movie2.png", "/movie3.jpg"];
+
+export type Genre = {
+  name: string;
+};
+
+export const Genres: Genre[] = [
+  {
+    name: "Action",
+  },
+  {
+    name: "Adventure",
+  },
+  {
+    name: "Animation",
+  },
+  {
+    name: "Biography",
+  },
+  {
+    name: "Comedy",
+  },
+  {
+    name: "Crime",
+  },
+  {
+    name: "Documentary",
+  },
+  {
+    name: "Drama",
+  },
+  {
+    name: "Family",
+  },
+  {
+    name: "Fantasy",
+  },
+  {
+    name: "Film-Noir",
+  },
+  {
+    name: "Game-Show",
+  },
+  {
+    name: "History",
+  },
+  {
+    name: "Horror",
+  },
+  {
+    name: "Music",
+  },
+  {
+    name: "Musical",
+  },
+  {
+    name: "Mystery",
+  },
+  {
+    name: "News",
+  },
+  {
+    name: "Reality-TV",
+  },
+  {
+    name: "Romance",
+  },
+  {
+    name: "Sci-Fi",
+  },
+  {
+    name: "Short",
+  },
+  {
+    name: "Sport",
+  },
+  {
+    name: "Talk-Show",
+  },
+  {
+    name: "Thriller",
+  },
+  {
+    name: "War",
+  },
+  {
+    name: "Western",
+  },
+];
 
 export type Movie = {
   img: string;
@@ -29,151 +124,21 @@ export type Movie = {
 
 type MovieSection = {
   title: string;
-  movies: Movie[];
+  url: string;
 };
 
 const moviesections: MovieSection[] = [
   {
     title: "Upcoming",
-    movies: [
-      { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
-      {
-        img: "./dragon.jpg",
-        rate: "6.9/10",
-        title: "How To Train Your Dragon Live Action",
-      },
-      { img: "./alien.jpg", rate: "6.9/10", title: "Alien Romulus" },
-      { img: "./ashes.jpg", rate: "6.9/10", title: "From the Ashes" },
-      {
-        img: "./spacedog.jpg",
-        rate: "6.9/10",
-        title: "Space Dogg",
-      },
-      {
-        img: "./Slide 4_3 - 1.png",
-        rate: "6.9/10",
-        title: "The Order",
-      },
-      {
-        img: "./Slide 4_3 - 1 (1).png",
-        rate: "6.9/10",
-        title: "Y2K",
-      },
-      {
-        img: "./Slide 4_3 - 1 (2).png",
-        rate: "6.9/10",
-        title: "Solo Leveling: ReAwakening",
-      },
-      {
-        img: "./Slide 4_3 - 1 (3).png",
-        rate: "6.9/10",
-        title: "Get Away",
-      },
-      {
-        img: "./Slide 4_3 - 1 (4).png",
-        rate: "6.9/10",
-        title: "Sonic the Hedgehog 3",
-      },
-    ],
+    url: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
   },
   {
     title: "Popular",
-    movies: [
-      {
-        img: "/shawshank.jpg",
-        rate: "9.3/10",
-        title: "The Shawshank Redemption",
-      },
-      {
-        img: "./Slide 4_3 - 1 (5).png",
-        rate: "6.9/10",
-        title: "How To Train Your Dragon Live Action",
-      },
-
-      {
-        img: "./Slide 4_3 - 1 (6).png",
-        rate: "6.9/10",
-        title: "Alien Romulus",
-      },
-      {
-        img: "./Slide 4_3 - 1 (13).png",
-        rate: "6.9/10",
-        title: "From the Ashes",
-      },
-      {
-        img: "./Slide 4_3 - 1 (7).png",
-        rate: "6.9/10",
-        title: "From the Ashes",
-      },
-      {
-        img: "./Slide 4_3 - 1 (8).png",
-        rate: "6.9/10",
-        title: "Space Dogg",
-      },
-      {
-        img: "./Slide 4_3 - 1 (9).png",
-        rate: "6.9/10",
-        title: "The Order",
-      },
-      {
-        img: "./Slide 4_3 - 1 (10).png",
-        rate: "6.9/10",
-        title: "Y2K",
-      },
-      {
-        img: "./Slide 4_3 - 1 (11).png",
-        rate: "6.9/10",
-        title: "Solo Leveling: ReAwakening",
-      },
-      {
-        img: "./Slide 4_3 - 1 (12).png",
-        rate: "6.9/10",
-        title: "Get Away",
-      },
-    ],
+    url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
   },
   {
     title: "Top Rated",
-    movies: [
-      { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
-      {
-        img: "./dragon.jpg",
-        rate: "6.9/10",
-        title: "How To Train Your Dragon Live Action",
-      },
-      { img: "./alien.jpg", rate: "6.9/10", title: "Alien Romulus" },
-      { img: "./ashes.jpg", rate: "6.9/10", title: "From the Ashes" },
-      {
-        img: "./spacedog.jpg",
-        rate: "6.9/10",
-        title: "Space Dogg",
-      },
-      {
-        img: "./Slide 4_3 - 1.png",
-        rate: "6.9/10",
-        title: "The Order",
-      },
-      {
-        img: "./Slide 4_3 - 1 (1).png",
-        rate: "6.9/10",
-        title: "Y2K",
-      },
-      {
-        img: "./Slide 4_3 - 1 (2).png",
-        rate: "6.9/10",
-        title: "Solo Leveling: ReAwakening",
-      },
-      {
-        img: "./Slide 4_3 - 1 (3).png",
-        rate: "6.9/10",
-        title: "Get Away",
-      },
-      {
-        img: "./Slide 4_3 - 1 (4).png",
-        rate: "6.9/10",
-        title: "Sonic the Hedgehog 3",
-      },
-    ],
+    url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
   },
 ];
 
@@ -181,6 +146,8 @@ export default function Home() {
   const plugin = React.useRef(
     Autoplay({ delay: 1500, stopOnInteraction: true })
   );
+
+  const [showTrailer, setShowTrailer] = useState(false);
   return (
     <div className="h-screen w-screen flex flex-col items-center">
       <div className="flex flex-col gap-6 w-screen justify-center items-center">
@@ -202,88 +169,17 @@ export default function Home() {
                   <p className="text-[24px] font-semibold">Genres</p>
                   <p>See lists of movies by genre</p>
                 </div>
-                <div className="w-full flex flex-wrap gap-4 my-4">
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Action
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Adventure
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Animation
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Biography
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Comedy
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Crime
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Documentary
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Drama
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Family
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Fantasy
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Film-Noir
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Game-Show
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    History
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Horror
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Music
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Musical
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Mystery
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    News
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Reality-TV
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Romance
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Sci-Fi
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Short
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Sport
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Talk-Show
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Thriller
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    War
-                  </Badge>
-                  <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                    Western
-                  </Badge>
+                <div className=" flex flex-wrap gap-4 my-4">
+                  {Genres.map((genre, index) => {
+                    return (
+                      <Badge
+                        key={index}
+                        className="bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2"
+                      >
+                        {genre.name} <ChevronRight />
+                      </Badge>
+                    );
+                  })}
                 </div>
               </PopoverContent>
             </Popover>
@@ -324,9 +220,31 @@ export default function Home() {
                             an encounter with the Wonderful Wizard of Oz, their
                             friendship reaches a crossroads.{" "}
                           </p>
-                          <Button className="text-sm w-36 h-10 bg-white text-black">
-                            Watch Trailer
-                          </Button>
+                          <Dialog
+                            open={showTrailer}
+                            onOpenChange={setShowTrailer}
+                          >
+                            <DialogTrigger asChild>
+                              <Button
+                                className="bg-white text-black absolute top-95 left-45"
+                                onClick={() => setShowTrailer(true)}
+                              >
+                                <Play /> Watch trailer
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="p-0 border-0 bg-transparent shadow-none sm:max-w-250 top-110">
+                              <img
+                                src="/trailer.png"
+                                alt="Trailer"
+                                className="h-140.25 w-250"
+                              />
+                              <DialogClose asChild>
+                                <button className="absolute -top-2 -right-2 rounded px-2 py-1">
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </DialogClose>
+                            </DialogContent>
+                          </Dialog>
                         </div>
                       </div>
                     </CardContent>
@@ -341,9 +259,7 @@ export default function Home() {
       </div>
       <div className="w-screen flex flex-col gap-13 my-7">
         {moviesections.map((s) => {
-          return (
-            <MovieSection key={s.title} title={s.title} movies={s.movies} />
-          );
+          return <MovieSection key={s.title} title={s.title} url={s.url} />;
         })}
       </div>
       <div className="py-10 px-15 w-full max-w-360 bg-[#4338CA] flex gap-122.25 my-7">

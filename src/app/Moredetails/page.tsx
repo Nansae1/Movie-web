@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,7 +8,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, Icon, Play, Search } from "lucide-react";
+import { ChevronDown, ChevronRight, Icon, Play, Search } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -16,6 +18,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Genres } from "../page";
 
 const movies = [
   { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
@@ -80,87 +83,16 @@ export default function Page() {
                 <p>See lists of movies by genre</p>
               </div>
               <div className="w-full flex flex-wrap gap-4 my-4">
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Action
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Adventure
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Animation
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Biography
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Comedy
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Crime
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Documentary
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Drama
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Family
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Fantasy
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Film-Noir
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Game-Show
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  History
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Horror
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Music
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Musical
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Mystery
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  News
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Reality-TV
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Romance
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Sci-Fi
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Short
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Sport
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Talk-Show
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Thriller
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  War
-                </Badge>
-                <Badge className="bg-white text-black px-2 border border-[#E4E4E7] text-xs">
-                  Western
-                </Badge>
+                {Genres.map((genre, index) => {
+                  return (
+                    <Badge
+                      key={index}
+                      className="bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2"
+                    >
+                      {genre.name} <ChevronRight />
+                    </Badge>
+                  );
+                })}
               </div>
             </PopoverContent>
           </Popover>
