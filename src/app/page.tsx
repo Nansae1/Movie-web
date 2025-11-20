@@ -13,108 +13,22 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MovieSection } from "./_components/MovieSection";
+import { ACCESS_TOKEN, MovieSection } from "./_components/MovieSection";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronRight, Play, Search, X } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, ChevronRight, Moon, Play, Search, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useTheme } from "next-themes";
+import { Genre, genreurl } from "./upcoming/page";
 
 const slideimg = ["/wicked.jpg", "/movie2.png", "/movie3.jpg"];
-
-export type Genre = {
-  name: string;
-};
-
-export const Genres: Genre[] = [
-  {
-    name: "Action",
-  },
-  {
-    name: "Adventure",
-  },
-  {
-    name: "Animation",
-  },
-  {
-    name: "Biography",
-  },
-  {
-    name: "Comedy",
-  },
-  {
-    name: "Crime",
-  },
-  {
-    name: "Documentary",
-  },
-  {
-    name: "Drama",
-  },
-  {
-    name: "Family",
-  },
-  {
-    name: "Fantasy",
-  },
-  {
-    name: "Film-Noir",
-  },
-  {
-    name: "Game-Show",
-  },
-  {
-    name: "History",
-  },
-  {
-    name: "Horror",
-  },
-  {
-    name: "Music",
-  },
-  {
-    name: "Musical",
-  },
-  {
-    name: "Mystery",
-  },
-  {
-    name: "News",
-  },
-  {
-    name: "Reality-TV",
-  },
-  {
-    name: "Romance",
-  },
-  {
-    name: "Sci-Fi",
-  },
-  {
-    name: "Short",
-  },
-  {
-    name: "Sport",
-  },
-  {
-    name: "Talk-Show",
-  },
-  {
-    name: "Thriller",
-  },
-  {
-    name: "War",
-  },
-  {
-    name: "Western",
-  },
-];
 
 export type Movie = {
   img: string;
@@ -125,27 +39,53 @@ export type Movie = {
 type MovieSection = {
   title: string;
   url: string;
+  path: string;
 };
 
 const moviesections: MovieSection[] = [
   {
     title: "Upcoming",
     url: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
+    path: "/upcoming",
   },
   {
     title: "Popular",
     url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+    path: "/popular",
   },
   {
     title: "Top Rated",
     url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+    path: "/top-rated",
   },
 ];
 
 export default function Home() {
+  const { setTheme, theme } = useTheme();
+  const [genres, setgenre] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const getGenre = async () => {
+      const res = await fetch(genreurl, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      const data = await res.json();
+
+      setgenre(data.results);
+    };
+
+    getGenre();
+  }, []);
   const plugin = React.useRef(
     Autoplay({ delay: 1500, stopOnInteraction: true })
   );
+
+  console.log(theme);
 
   const [showTrailer, setShowTrailer] = useState(false);
   return (
@@ -165,16 +105,16 @@ export default function Home() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-144.25 h-83.25">
-                <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7]">
+                <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7] dark:border-b-[#27272A]">
                   <p className="text-[24px] font-semibold">Genres</p>
                   <p>See lists of movies by genre</p>
                 </div>
                 <div className=" flex flex-wrap gap-4 my-4">
-                  {Genres.map((genre, index) => {
+                  {genres.map((genre, index) => {
                     return (
                       <Badge
                         key={index}
-                        className="bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2"
+                        className="bg-white text-black dark:bg-black dark:border-[#27272A] dark:text-white px-2 border border-[#E4E4E7] text-xs gap-2"
                       >
                         {genre.name} <ChevronRight />
                       </Badge>
@@ -189,7 +129,13 @@ export default function Home() {
               <Input className="h-9 w-94.75 pl-10" placeholder="Search.." />
             </div>
           </div>
-          <img src="./Modes.png" className="h-9 w-9"></img>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            <Moon className="h-9 w-9 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90 dark:text-white" />
+          </Button>
         </div>
         <Carousel
           plugins={[plugin.current]}
@@ -259,7 +205,14 @@ export default function Home() {
       </div>
       <div className="w-screen flex flex-col gap-13 my-7">
         {moviesections.map((s) => {
-          return <MovieSection key={s.title} title={s.title} url={s.url} />;
+          return (
+            <MovieSection
+              key={s.title}
+              title={s.title}
+              url={s.url}
+              path={s.path}
+            />
+          );
         })}
       </div>
       <div className="py-10 px-15 w-full max-w-360 bg-[#4338CA] flex gap-122.25 my-7">

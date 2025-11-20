@@ -10,14 +10,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronRight, Icon, Play, Search, X } from "lucide-react";
 import { ArrowRightIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Genres } from "../page";
+import { Genre, genreurl } from "../upcoming/page";
+import { ACCESS_TOKEN } from "../_components/MovieSection";
 
 type Movie = {
   img: string;
@@ -54,6 +55,25 @@ const movies: Movie[] = [
 ];
 
 export default function Page() {
+  const [genres, setgenre] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const getGenre = async () => {
+      const res = await fetch(genreurl, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      const data = await res.json();
+
+      setgenre(data.results);
+    };
+
+    getGenre();
+  }, []);
   const [showTrailer, setShowTrailer] = useState(false);
   return (
     <div className="w-screen h-screen flex flex-col items-center">
@@ -76,7 +96,7 @@ export default function Page() {
                 <p>See lists of movies by genre</p>
               </div>
               <div className="w-full flex flex-wrap gap-4 my-4">
-                {Genres.map((genre, index) => {
+                {genres.map((genre, index) => {
                   return (
                     <Badge
                       key={index}

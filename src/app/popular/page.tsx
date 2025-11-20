@@ -8,7 +8,14 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronRight, Icon, Play, Search } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Icon,
+  Moon,
+  Play,
+  Search,
+} from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -18,7 +25,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Genres } from "../page";
+import { ACCESS_TOKEN, Movie } from "../_components/MovieSection";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { Genre, genreurl } from "../upcoming/page";
 
 const movies = [
   { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
@@ -61,7 +71,50 @@ const movies = [
   },
 ];
 
+const url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+
 export default function Page() {
+  const { setTheme, theme } = useTheme();
+
+  const [genres, setgenre] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const getGenre = async () => {
+      const res = await fetch(genreurl, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      const data = await res.json();
+
+      setgenre(data.results);
+    };
+
+    getGenre();
+  }, []);
+
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const getMovies = async () => {
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      const data = await res.json();
+
+      setMovies(data.results);
+    };
+
+    getMovies();
+  }, []);
   return (
     <div className="w-screen h-screen flex flex-col items-center gap-8">
       <div className="flex w-full justify-between max-w-360 h-15 items-center mt-3">
@@ -78,16 +131,16 @@ export default function Page() {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-144.25 h-83.25">
-              <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7]">
+              <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7] dark:border-b-[#27272A]">
                 <p className="text-[24px] font-semibold">Genres</p>
                 <p>See lists of movies by genre</p>
               </div>
               <div className="w-full flex flex-wrap gap-4 my-4">
-                {Genres.map((genre, index) => {
+                {genres.map((genre, index) => {
                   return (
                     <Badge
                       key={index}
-                      className="bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2"
+                      className="bg-white text-black px-2 border border-[#E4E4E7]dark:bg-black dark:border-[#27272A] dark:text-white text-xs gap-2"
                     >
                       {genre.name} <ChevronRight />
                     </Badge>
@@ -102,28 +155,39 @@ export default function Page() {
             <Input className="h-9 w-94.75 pl-10" placeholder="Search.." />
           </div>
         </div>
-        <img src="./Modes.png" className="h-9 w-9"></img>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          <Moon className="h-9 w-9 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+        </Button>
       </div>
       <div className="flex w-full max-w-360 flex-col pt-6 gap-6">
         <div className=" flex flex-col gap-13 my-7">
-          <div className="w-full h-244.5 flex flex-col items-center gap-8">
+          <div className="w-full flex flex-col items-center gap-8">
             <div className="w-full max-w-360 font-semibold text-3xl">
-              Upcoming
+              Popular
             </div>
             <div className="grid grid-cols-5 gap-8 w-full max-w-360">
-              {movies.map((movie, index) => {
+              {movies.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="h-109.75 bg-[#F4F4F5] flex flex-col rounded-lg gap-1"
+                    className="h-109.75 bg-[#F4F4F5] dark:bg-[#27272A] flex flex-col rounded-lg gap-1"
                   >
                     <img
                       className="h-85 w-full rounded-t-lg hover:grayscale-35"
-                      src={movie.img}
+                      src={
+                        "https://image.tmdb.org/t/p/w500/" + item.poster_path
+                      }
                     ></img>
                     <div className="flex flex-col mx-2">
-                      <p className="text-xs">{movie.rate}</p>
-                      <p className="text-lg">{movie.title}</p>
+                      <div className="flex gap-2 items-center">
+                        <img src="./star.png" className="h-4.5 w-4"></img>
+                        <p className="text-xs">{item.vote_average}</p>
+                      </div>
+                      <p className="text-lg">{item.title}</p>
                     </div>
                   </div>
                 );

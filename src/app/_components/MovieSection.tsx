@@ -4,10 +4,12 @@ import { Arrow } from "@radix-ui/react-popover";
 import { MovieCard } from "./MovieCard";
 import { ArrowRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export type MovieSectionProps = {
   title: string;
   url: string;
+  path: string;
 };
 
 export type Movie = {
@@ -27,7 +29,7 @@ export type Movie = {
 export const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODU0MTExYTc1ODgwNTEyZTMwM2I2MWY0MGFkNGE2ZSIsIm5iZiI6MTc2MzUyMjgwOS45MDYsInN1YiI6IjY5MWQzOGY5MjM5MDQwZDlhMjU3Y2Y1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zW4mm5SxqitlM3vfhaYynWexBCfxmc4mfsNw6Dm3dWk";
 
-export const MovieSection = ({ title, url }: MovieSectionProps) => {
+export const MovieSection = ({ title, url, path }: MovieSectionProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
@@ -53,9 +55,11 @@ export const MovieSection = ({ title, url }: MovieSectionProps) => {
       <div className="w-full flex flex-col items-center gap-8">
         <div className="flex w-full max-w-319.25 justify-between">
           <p className="text-2xl font-semibold">{title}</p>
-          <p className="text-sm flex gap-1 items-center hover:underline">
-            See more <ArrowRightIcon className="h-4 w-4" />
-          </p>
+          <Link href={path}>
+            <p className="text-sm flex gap-1 items-center hover:underline">
+              See more <ArrowRightIcon className="h-4 w-4" />
+            </p>
+          </Link>
         </div>
         <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
           {movies.map((item, index) => (
