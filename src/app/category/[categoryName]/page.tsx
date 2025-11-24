@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronRight,
   Icon,
+  Link,
   Moon,
   Play,
   Search,
@@ -25,55 +26,22 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { ACCESS_TOKEN, Movie } from "../_components/MovieSection";
-import { useEffect, useState } from "react";
+import { ACCESS_TOKEN, Movie } from "@/app/_components/MovieSection";
+import { use, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { Genre, genreurl } from "../upcoming/page";
+import { useParams } from "next/navigation";
 
-const movies = [
-  { img: "./christmas.jpg", rate: "6.9/10", title: "Dear Santa" },
-  {
-    img: "./dragon.jpg",
-    rate: "6.9/10",
-    title: "How To Train Your Dragon Live Action",
-  },
-  { img: "./alien.jpg", rate: "6.9/10", title: "Alien Romulus" },
-  { img: "./ashes.jpg", rate: "6.9/10", title: "From the Ashes" },
-  {
-    img: "./spacedog.jpg",
-    rate: "6.9/10",
-    title: "Space Dogg",
-  },
-  {
-    img: "./Slide 4_3 - 1.png",
-    rate: "6.9/10",
-    title: "The Order",
-  },
-  {
-    img: "./Slide 4_3 - 1 (1).png",
-    rate: "6.9/10",
-    title: "Y2K",
-  },
-  {
-    img: "./Slide 4_3 - 1 (2).png",
-    rate: "6.9/10",
-    title: "Solo Leveling: ReAwakening",
-  },
-  {
-    img: "./Slide 4_3 - 1 (3).png",
-    rate: "6.9/10",
-    title: "Get Away",
-  },
-  {
-    img: "./Slide 4_3 - 1 (4).png",
-    rate: "6.9/10",
-    title: "Sonic the Hedgehog 3",
-  },
-];
+export type Genre = {
+  id: number;
+  name: string;
+};
 
-const url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+export const genreurl =
+  "https://api.themoviedb.org/3/genre/movie/list?language=en";
 
-export default function Page() {
+export default async function Page() {
+  const { categoryName } = useParams();
+
   const { setTheme, theme } = useTheme();
 
   const [genres, setgenre] = useState<Genre[]>([]);
@@ -90,14 +58,14 @@ export default function Page() {
 
       const data = await res.json();
 
-      setgenre(data.results);
+      setgenre(data.genres);
     };
 
     getGenre();
   }, []);
 
   const [movies, setMovies] = useState<Movie[]>([]);
-
+  const url = `https://api.themoviedb.org/3/movie/${categoryName}?language=en-US&page=1`;
   useEffect(() => {
     const getMovies = async () => {
       const res = await fetch(url, {
@@ -118,7 +86,13 @@ export default function Page() {
   return (
     <div className="w-screen h-screen flex flex-col items-center gap-8">
       <div className="flex w-full justify-between max-w-360 h-15 items-center mt-3">
-        <img src="./Logo.png" className="h-5 w-23"></img>
+        <a href="/">
+          <img
+            src="./Logo.png"
+            alt="Back to HomePage"
+            className="h-5 w-23"
+          ></img>
+        </a>
         <div className="flex gap-3 items-center">
           <Popover>
             <PopoverTrigger
@@ -130,17 +104,17 @@ export default function Page() {
                 Genre
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-144.25 h-83.25">
+            <PopoverContent className="w-144.25 ">
               <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7] dark:border-b-[#27272A]">
                 <p className="text-[24px] font-semibold">Genres</p>
                 <p>See lists of movies by genre</p>
               </div>
               <div className="w-full flex flex-wrap gap-4 my-4">
-                {genres.map((genre, index) => {
+                {genres?.map((genre, index) => {
                   return (
                     <Badge
                       key={index}
-                      className="bg-white text-black px-2 border border-[#E4E4E7]dark:bg-black dark:border-[#27272A] dark:text-white text-xs gap-2"
+                      className="bg-white text-black px-2 border border-[#E4E4E7] dark:bg-black dark:border-[#27272A] dark:text-white text-xs gap-2"
                     >
                       {genre.name} <ChevronRight />
                     </Badge>
@@ -167,7 +141,7 @@ export default function Page() {
         <div className=" flex flex-col gap-13 my-7">
           <div className="w-full flex flex-col items-center gap-8">
             <div className="w-full max-w-360 font-semibold text-3xl">
-              Popular
+              {categoryName}
             </div>
             <div className="grid grid-cols-5 gap-8 w-full max-w-360">
               {movies.map((item, index) => {

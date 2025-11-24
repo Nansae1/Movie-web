@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+import ReactPlayer from "react-player";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,42 +19,18 @@ import {
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Genre, genreurl } from "../upcoming/page";
-import { ACCESS_TOKEN } from "../_components/MovieSection";
+import { ACCESS_TOKEN, Movie } from "../_components/MovieSection";
 
-type Movie = {
-  img: string;
-  rate: string;
-  title: string;
+export type Genre = {
+  id: number;
+  name: string;
 };
 
-const movies: Movie[] = [
-  {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
-  },
-  {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
-  },
-  {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
-  },
-  {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
-  },
-  {
-    img: "/shawshank.jpg",
-    rate: "9.3/10",
-    title: "The Shawshank Redemption",
-  },
-];
+export const genreurl =
+  "https://api.themoviedb.org/3/genre/movie/list?language=en";
+
+const url =
+  "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
 
 export default function Page() {
   const [genres, setgenre] = useState<Genre[]>([]);
@@ -69,16 +47,38 @@ export default function Page() {
 
       const data = await res.json();
 
-      setgenre(data.results);
+      setgenre(data.genres);
     };
 
     getGenre();
+  }, []);
+
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const getMovies = async () => {
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      const data = await res.json();
+
+      setMovies(data.results);
+    };
+
+    getMovies();
   }, []);
   const [showTrailer, setShowTrailer] = useState(false);
   return (
     <div className="w-screen h-screen flex flex-col items-center">
       <div className="flex w-full justify-between max-w-360 h-15 mt-4 items-center ">
-        <img src="./Logo.png" className="h-5 w-23"></img>
+        <a href="/">
+          <img src="./Logo.png" className="h-5 w-23"></img>
+        </a>
         <div className="flex gap-3 items-center">
           <Popover>
             <PopoverTrigger
@@ -90,7 +90,7 @@ export default function Page() {
                 Genre
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-144.25 h-83.25">
+            <PopoverContent className="w-144.25 ">
               <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7]">
                 <p className="text-[24px] font-semibold">Genres</p>
                 <p>See lists of movies by genre</p>
@@ -150,11 +150,10 @@ export default function Page() {
                   <Play />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="p-0 border-0 bg-transparent shadow-none sm:max-w-250 top-100">
-                <img
-                  src="/trailer.png"
-                  alt="Trailer"
-                  className="h-140.25 w-250"
+              <DialogContent className="p-0 border-0 bg-transparent shadow-none h-140 sm:max-w-250 top-100">
+                <ReactPlayer
+                  src="https://youtu.be/6COmYeLsz4c?si=dpRGc_bBMgzLkEtA"
+                  style={{ height: "100%", width: "250" }}
                 />
                 <DialogClose asChild>
                   <button className="absolute -top-2 -right-2 rounded px-2 py-1">
@@ -205,12 +204,12 @@ export default function Page() {
         <div className="flex flex-col gap-8 pb-18.155">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-2xl">More like this</p>
-            <p className="flex gap-1 items-center">
+            <p className="flex gap-1 items-center hover:underline text-sm">
               See more <ArrowRightIcon className="h-4 w-4" />
             </p>
           </div>
           <div className="grid grid-cols-5 gap-8">
-            {movies.map((movie, index) => {
+            {movies.slice(0, 5).map((item, index) => {
               return (
                 <div
                   key={index}
@@ -218,11 +217,11 @@ export default function Page() {
                 >
                   <img
                     className="h-70.345 w-full rounded-t-lg"
-                    src={movie.img}
+                    src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
                   ></img>
                   <div className="flex flex-col mx-2">
-                    <p className="text-xs">{movie.rate}</p>
-                    <p className="text-base">{movie.title}</p>
+                    <p className="text-xs">{item.vote_average}</p>
+                    <p className="text-base">{item.title}</p>
                   </div>
                 </div>
               );

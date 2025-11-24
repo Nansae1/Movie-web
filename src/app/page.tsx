@@ -2,6 +2,7 @@
 import Image from "next/image";
 
 import * as React from "react";
+import ReactPlayer from "react-player";
 import Autoplay from "embla-carousel-autoplay";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,7 +27,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTheme } from "next-themes";
-import { Genre, genreurl } from "./upcoming/page";
+export type Genre = {
+  id: number;
+  name: string;
+};
+
+export const genreurl =
+  "https://api.themoviedb.org/3/genre/movie/list?language=en";
 
 const slideimg = ["/wicked.jpg", "/movie2.png", "/movie3.jpg"];
 
@@ -76,7 +83,7 @@ export default function Home() {
 
       const data = await res.json();
 
-      setgenre(data.results);
+      setgenre(data.genres);
     };
 
     getGenre();
@@ -104,7 +111,7 @@ export default function Home() {
                   Genre
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-144.25 h-83.25">
+              <PopoverContent className="w-144.25 ">
                 <div className="flex flex-col gap-1 w-134.25 border-b pb-4 border-b-[#E4E4E7] dark:border-b-[#27272A]">
                   <p className="text-[24px] font-semibold">Genres</p>
                   <p>See lists of movies by genre</p>
@@ -178,14 +185,13 @@ export default function Home() {
                                 <Play /> Watch trailer
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="p-0 border-0 bg-transparent shadow-none sm:max-w-250 top-110">
-                              <img
-                                src="/trailer.png"
-                                alt="Trailer"
-                                className="h-140.25 w-250"
+                            <DialogContent className="p-0 border-0 bg-transparent shadow-none h-140 sm:max-w-250 top-110">
+                              <ReactPlayer
+                                src="https://youtu.be/6COmYeLsz4c?si=dpRGc_bBMgzLkEtA"
+                                style={{ height: "100%", width: "250" }}
                               />
                               <DialogClose asChild>
-                                <button className="absolute -top-2 -right-2 rounded px-2 py-1">
+                                <button className="absolute -top-2 text-white -right-2 rounded px-2 py-1">
                                   <X className="w-4 h-4" />
                                 </button>
                               </DialogClose>

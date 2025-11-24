@@ -62,7 +62,7 @@ export const MovieSection = ({ title, url, path }: MovieSectionProps) => {
           </Link>
         </div>
         <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
-          {movies.map((item, index) => (
+          {movies.slice(0, 10).map((item, index) => (
             <MovieCard key={index} movie={item} />
           ))}
         </div>
