@@ -47,23 +47,31 @@ type MovieSection = {
   title: string;
   url: string;
   path: string;
+  categoryName: string;
+  showButton: Boolean;
 };
 
-const moviesections: MovieSection[] = [
+export const moviesections: MovieSection[] = [
   {
     title: "Upcoming",
     url: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-    path: "/upcoming",
+    path: "/category/upcoming",
+    categoryName: "upcoming",
+    showButton: true,
   },
   {
     title: "Popular",
     url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-    path: "/popular",
+    path: "/category/popular",
+    categoryName: "popular",
+    showButton: true,
   },
   {
     title: "Top Rated",
     url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-    path: "/top-rated",
+    path: "/category/top-rated",
+    categoryName: "top_rated",
+    showButton: true,
   },
 ];
 
@@ -217,6 +225,8 @@ export default function Home() {
               title={s.title}
               url={s.url}
               path={s.path}
+              categoryName={s.categoryName}
+              showButton={true}
             />
           );
         })}
