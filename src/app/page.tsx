@@ -25,8 +25,11 @@ import {
   DialogContent,
   DialogClose,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { useTheme } from "next-themes";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 export type Genre = {
   id: number;
   name: string;
@@ -50,7 +53,7 @@ type MovieSection = {
   categoryName: string;
   showButton: Boolean;
 };
-
+// const { movieId } = useParams() as { movieId: string };
 export const moviesections: MovieSection[] = [
   {
     title: "Upcoming",
@@ -73,6 +76,13 @@ export const moviesections: MovieSection[] = [
     categoryName: "top_rated",
     showButton: true,
   },
+  // {
+  //   title: "More like this",
+  //   url: `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`,
+  //   path: "/category/top-rated",
+  //   categoryName: "top_rated",
+  //   showButton: true,
+  // },
 ];
 
 export default function Home() {
@@ -125,14 +135,13 @@ export default function Home() {
                   <p>See lists of movies by genre</p>
                 </div>
                 <div className=" flex flex-wrap gap-4 my-4">
-                  {genres.map((genre, index) => {
+                  {genres.map((genre) => {
                     return (
-                      <Badge
-                        key={index}
-                        className="bg-white text-black dark:bg-black dark:border-[#27272A] dark:text-white px-2 border border-[#E4E4E7] text-xs gap-2"
-                      >
-                        {genre.name} <ChevronRight />
-                      </Badge>
+                      <Link key={genre.id} href={`/genresfilter/${genre.id}`}>
+                        <Badge className="bg-white text-black dark:bg-black dark:border-[#27272A] dark:text-white px-2 border border-[#E4E4E7] text-xs gap-2">
+                          {genre.name} <ChevronRight />
+                        </Badge>
+                      </Link>
                     );
                   })}
                 </div>
@@ -194,6 +203,9 @@ export default function Home() {
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="p-0 border-0 bg-transparent shadow-none h-140 sm:max-w-250 top-110">
+                              <DialogTitle className="hidden">
+                                Trailer
+                              </DialogTitle>
                               <ReactPlayer
                                 src="https://youtu.be/6COmYeLsz4c?si=dpRGc_bBMgzLkEtA"
                                 style={{ height: "100%", width: "250" }}

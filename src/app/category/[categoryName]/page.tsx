@@ -122,14 +122,13 @@ export default function Page() {
                 <p>See lists of movies by genre</p>
               </div>
               <div className="w-full flex flex-wrap gap-4 my-4">
-                {genres?.map((genre, index) => {
+                {genres?.map((genre) => {
                   return (
-                    <Badge
-                      key={index}
-                      className="bg-white text-black px-2 border border-[#E4E4E7] dark:bg-black dark:border-[#27272A] dark:text-white text-xs gap-2"
-                    >
-                      {genre.name} <ChevronRight />
-                    </Badge>
+                    <Link key={genre.id} href={`/genresfilter/${genre.id}`}>
+                      <Badge className="bg-white text-black px-2 border border-[#E4E4E7] dark:bg-black dark:border-[#27272A] dark:text-white text-xs gap-2">
+                        {genre.name} <ChevronRight />
+                      </Badge>
+                    </Link>
                   );
                 })}
               </div>
@@ -161,7 +160,7 @@ export default function Page() {
                 path={path}
               />
             </div>
-            <div className="w-full flex justify-end h-10">
+            <div className="w-319.25 flex justify-end h-10">
               <Pagination className="w-full flex justify-end">
                 <PaginationContent>
                   <PaginationItem>

@@ -27,11 +27,13 @@ import {
   DialogContent,
   DialogClose,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { ACCESS_TOKEN, Movie } from "@/app/_components/MovieSection";
 import { useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { title } from "process";
+import Link from "next/link";
 
 export type Genre = {
   id: number;
@@ -203,18 +205,16 @@ export default function Page() {
         <div className="flex flex-col">
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <p className="text-4xl font-semibold">
-                {movie?.results.filter((result) => result.title)}
-              </p>
-              <p>2024.11.26 · PG · 2h 40m</p>
+              <p className="text-4xl font-semibold">{movie?.title}</p>
+              <p>{movie?.release_date}</p>
             </div>
             <div className="flex flex-col">
               <p>Rating</p>
               <div className="flex items-center">
                 <img src="/star.png" className="h-7 w-7"></img>
                 <div className="flex flex-col">
-                  <p className="text-lg">6.9/10</p>
-                  <p className="text-xs">37k</p>
+                  <p className="text-lg">{movie?.vote_average}</p>
+                  <p className="text-xs">{movie?.vote_count}</p>
                 </div>
               </div>
             </div>
@@ -232,6 +232,28 @@ export default function Page() {
               width={758}
               height={428}
             />
+            <Dialog open={showTrailer} onOpenChange={setShowTrailer}>
+              <DialogTrigger asChild>
+                <Button
+                  className="bg-white text-black absolute top-95 left-85"
+                  onClick={() => setShowTrailer(true)}
+                >
+                  <Play /> Watch trailer
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="p-0 border-0 bg-transparent shadow-none h-140 sm:max-w-250 top-110">
+                <DialogTitle className="hidden">Trailer</DialogTitle>
+                <ReactPlayer
+                  src={`https://wwww.youtube.com/watch?v=${video}`}
+                  style={{ height: "100%", width: "250" }}
+                />
+                <DialogClose asChild>
+                  <button className="absolute -top-2 text-white -right-2 rounded px-2 py-1">
+                    <X className="w-4 h-4" />
+                  </button>
+                </DialogClose>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <div className="flex flex-col gap-5">
@@ -272,29 +294,32 @@ export default function Page() {
         <div className="flex flex-col gap-8 pb-18.155">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-2xl">More like this</p>
-            <p className="flex gap-1 items-center hover:underline text-sm">
-              See more <ArrowRightIcon className="h-4 w-4" />
-            </p>
+            <Link href={`/morelikethis/${movieId}`}>
+              <p className="flex gap-1 items-center hover:underline text-sm">
+                See more <ArrowRightIcon className="h-4 w-4" />
+              </p>
+            </Link>
           </div>
           <div className="grid grid-cols-5 gap-8">
-            {movies?.slice(0, 5).map((item, index) => {
+            {movies?.slice(0, 5).map((item) => {
               return (
-                <div
-                  key={index}
-                  className="h-93.095 bg-[#F4F4F5] flex flex-col rounded-lg gap-1"
-                >
-                  <img
-                    className="h-70.345 w-full rounded-t-lg"
-                    src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
-                  ></img>
-                  <div className="flex flex-col mx-2">
-                    <div className="flex gap-2 items-center">
-                      <img src="/star.png" className="h-4.5 w-4"></img>
-                      <p className="text-xs">{item.vote_average}</p>
+                <Link key={item.id} href={`/movie/${item.id}`}>
+                  <div className="h-93.5 bg-[#F4F4F5] flex flex-col rounded-lg gap-1">
+                    <img
+                      className="h-71 w-full rounded-t-lg hover:grayscale-35"
+                      src={
+                        "https://image.tmdb.org/t/p/w500/" + item.poster_path
+                      }
+                    ></img>
+                    <div className="flex flex-col mx-2">
+                      <div className="flex gap-2 items-center">
+                        <img src="/star.png" className="h-4.5 w-4"></img>
+                        <p className="text-xs">{item.vote_average}</p>
+                      </div>
+                      <p className="text-base">{item.title}</p>
                     </div>
-                    <p className="text-base">{item.title}</p>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
