@@ -5,7 +5,7 @@ import { MovieCard } from "./MovieCard";
 import { ArrowRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Genre } from "../page";
+import { Genre } from "./Header";
 
 export type MovieSectionProps = {
   title: string;
@@ -77,7 +77,7 @@ export const MovieSection = ({
           )}
         </div>
         <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
-          {movies.slice(0, 10).map((item, index) => (
+          {movies?.slice(0, 10).map((item, index) => (
             <MovieCard key={index} movie={item} id={item.id} />
           ))}
         </div>
