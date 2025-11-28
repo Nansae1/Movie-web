@@ -32,6 +32,7 @@ export type Movie = {
   vote_count: number;
   genres: Genre[];
   results: Results[];
+  backdrop_path: string;
 };
 
 export const ACCESS_TOKEN =

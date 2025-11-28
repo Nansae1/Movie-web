@@ -18,9 +18,9 @@ type MovieCarouselItemProps = {
   movie: Movie;
 };
 export const MovieCarouselItem = ({ movie }: MovieCarouselItemProps) => {
-  const { poster_path, title } = movie;
+  const { backdrop_path, title } = movie;
 
-  const imageUrl = "https://image.tmdb.org/t/p/w500/" + poster_path;
+  const imageUrl = "https://image.tmdb.org/t/p/original/" + backdrop_path;
 
   const [showTrailer, setShowTrailer] = useState(false);
 
@@ -30,7 +30,7 @@ export const MovieCarouselItem = ({ movie }: MovieCarouselItemProps) => {
         <Card className="border-none py-0">
           <CardContent
             className="flex w-full h-150 bg-center bg-cover"
-            style={{ backgroundImage: imageUrl }}
+            style={{ backgroundImage: `url(${imageUrl})` }}
           >
             <div className="h-66 w-101 mx-35 my-46 gap-4">
               <div className="flex flex-col">

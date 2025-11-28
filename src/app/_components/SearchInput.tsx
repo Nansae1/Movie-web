@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { MovieSearch } from "./MovieSearch";
 
 export type InputProps = {
   movie: Movie;
@@ -67,11 +68,15 @@ export const SearchInput = () => {
           className="w-144.25! absolute -top-10 pl-10"
         ></Input>
 
-        <div className="w-full max-h-150 rounded-md overflow-scroll">
+        <div className="w-full max-h-150 rounded-md overflow-scroll flex flex-col items-center">
           {loading && <p className="p-4 text-center">Loading ...</p>}
           {!loading && movies.length === 0 && (
             <p className="p-4 text-center">No results found.</p>
           )}
+          {!loading &&
+            movies.map((movie) => (
+              <MovieSearch key={movie.id} movie={movie} id={movie.id} />
+            ))}
         </div>
       </PopoverContent>
     </Popover>
