@@ -9,17 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
-import ReactPlayer from "react-player";
 import Autoplay from "embla-carousel-autoplay";
 import { MovieCarouselItem } from "./MovieCarouselItem";
 

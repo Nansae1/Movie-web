@@ -3,23 +3,15 @@ import { useState, useEffect } from "react";
 import { ACCESS_TOKEN, Movie } from "@/app/_components/MovieSection";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import Header from "@/app/_components/Header";
 import Footer from "@/app/_components/Footer";
+import { PaginationCard } from "@/app/_components/PaginationCard";
 
 export default function Page() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const { movieId } = useParams() as { movieId: string };
-  const moviesurl = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`;
-  const params = useSearchParams();
+  const [page, setPage] = useState(1);
+  const moviesurl = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=${page}`;
 
   useEffect(() => {
     const getMovies = async () => {
@@ -37,7 +29,7 @@ export default function Page() {
     };
 
     getMovies();
-  }, []);
+  }, [page]);
   return (
     <div className="w-screen h-screen flex flex-col items-center gap-8">
       <Header />
@@ -75,30 +67,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="w-319.25 flex justify-end h-10">
-                <Pagination className="w-full flex justify-end">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#" isActive>
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">5</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationNext href="#" />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+                <PaginationCard page={page} setPage={setPage} />
               </div>
             </div>
           </div>

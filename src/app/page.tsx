@@ -2,27 +2,9 @@
 import Image from "next/image";
 
 import * as React from "react";
-import ReactPlayer from "react-player";
 import Autoplay from "embla-carousel-autoplay";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { MovieSection } from "./_components/MovieSection";
-import { Play, X } from "lucide-react";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import { MovieCarousel } from "./_components/MovieCarousel";
