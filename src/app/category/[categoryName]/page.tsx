@@ -18,7 +18,8 @@ import { MovieCard } from "@/app/_components/MovieCard";
 export default function Page() {
   const { categoryName } = useParams() as { categoryName: string };
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [page, setPage] = useState(1);
+  const [totalpage, setTotalpage] = useState(1);
+  const [currentpage, setCurrentPage] = useState(1);
 
   const title =
     moviesections.find((el) => el.categoryName === categoryName)?.title || "";
@@ -26,7 +27,7 @@ export default function Page() {
   useEffect(() => {
     const getMovies = async () => {
       const apiCategory = categoryName.replace(/-/g, "_");
-      const url = `https://api.themoviedb.org/3/movie/${apiCategory}?language=en-US&page=${page}`;
+      const url = `https://api.themoviedb.org/3/movie/${apiCategory}?language=en-US&page=${currentpage}`;
 
       const res = await fetch(url, {
         method: "GET",
@@ -36,13 +37,18 @@ export default function Page() {
         },
       });
 
-      const data = await res.json();
+      const data = (await res.json()) as {
+        results: Movie[];
+        total_results: number;
+        total_pages: number;
+      };
 
       setMovies(data.results);
+      setTotalpage(data.total_pages);
     };
 
     getMovies();
-  }, [page]);
+  }, [currentpage]);
 
   return (
     <div className="w-screen h-screen flex flex-col items-center gap-8">
@@ -66,8 +72,8 @@ export default function Page() {
             </div>
             <div className="w-319.25 flex justify-end h-10">
               <PaginationCard
-                page={page}
-                setPage={setPage}
+                currentpage={currentpage}
+                setCurrentPage={setCurrentPage}
                 totalpage={totalpage}
               />
             </div>

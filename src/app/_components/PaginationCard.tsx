@@ -1,59 +1,100 @@
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Dispatch, SetStateAction } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type PageProps = {
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  currentpage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
   totalpage: number;
 };
 
-export const PaginationCard = ({ page, setPage, totalpage }: PageProps) => {
+export const PaginationCard = ({
+  currentpage,
+  setCurrentPage,
+  totalpage,
+}: PageProps) => {
+  const prevPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
   return (
     <Pagination className="w-full flex justify-end">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" onClick={() => setPage(page - 1)} />
+          <Button onClick={prevPage} disabled={currentpage === 1}>
+            {" "}
+            <ChevronLeft /> Prev
+          </Button>
         </PaginationItem>
+        {currentpage > 3 && (
+          <>
+            <PaginationItem>
+              <Button
+                variant={"outline"}
+                onClick={() => setCurrentPage((currentpage = 1))}
+              >
+                1
+              </Button>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          </>
+        )}
+        {currentpage > 1 && (
+          <PaginationItem>
+            <Button
+              variant={"outline"}
+              onClick={() => setCurrentPage(currentpage - 1)}
+            >
+              {currentpage - 1}
+            </Button>
+          </PaginationItem>
+        )}
         <PaginationItem>
-          <PaginationLink
-            href="#"
-            isActive={page === 1}
-            onClick={() => setPage((page = 1))}
-          >
-            1
-          </PaginationLink>
+          <Button variant={"default"}>{currentpage}</Button>
         </PaginationItem>
+        {currentpage < totalpage && (
+          <PaginationItem>
+            <Button
+              variant={"outline"}
+              onClick={() => setCurrentPage(currentpage + 1)}
+            >
+              {currentpage + 1}
+            </Button>
+          </PaginationItem>
+        )}
+        {currentpage < totalpage - 1 && (
+          <>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <Button
+                variant={"outline"}
+                onClick={() => setCurrentPage(totalpage)}
+              >
+                {totalpage}
+              </Button>
+            </PaginationItem>
+          </>
+        )}
+
         <PaginationItem>
-          <PaginationLink
-            href="#"
-            isActive={page === 2}
-            onClick={() => setPage((page = 2))}
-          >
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink
-            href="#"
-            isActive={page === totalpage}
-            onClick={() => setPage((page = totalpage))}
-          >
-            {totalpage}
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" onClick={() => setPage(page + 1)} />
+          <Button onClick={nextPage} disabled={currentpage === totalpage}>
+            {" "}
+            Next <ChevronRight />
+          </Button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
