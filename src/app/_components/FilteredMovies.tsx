@@ -3,23 +3,23 @@ import { ACCESS_TOKEN, Movie } from "./MovieSection";
 import { useEffect, useState } from "react";
 import { PaginationCard } from "./PaginationCard";
 import FilteredMovieSkeleton from "./FilteredMovieSkeleton";
+import { useSearchParams } from "next/navigation";
 
 type MovieCardProps = {
   currentGenreName?: string;
-  genreIds: string;
 };
 
-export const FilteredMovies = ({
-  currentGenreName,
-  genreIds,
-}: MovieCardProps) => {
+export const FilteredMovies = ({ currentGenreName }: MovieCardProps) => {
   const [filtermovies, setFiltermovies] = useState<Movie[]>([]);
   const [totalmovie, setTotalmovie] = useState(0);
   const [totalpage, setTotalpage] = useState(1);
   const [loading, setLoading] = useState(true);
 
+  const searchParams = useSearchParams();
+  const genreIds = searchParams.get("genreIds")?.split(",") || [];
+
   const [currentpage, setCurrentPage] = useState(1);
-  const filtermovieurl = `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds}&page=${currentpage}`;
+  const filtermovieurl = `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds.join()}&page=${currentpage}`;
 
   useEffect(() => {
     const getGenre = async () => {
@@ -45,7 +45,7 @@ export const FilteredMovies = ({
       setLoading(false);
     };
     getGenre();
-  }, [currentpage]);
+  }, [currentpage, genreIds.join()]);
   return (
     <div className="flex flex-col gap-8 pl-4 border-l">
       <p className="text-xl font-semibold">

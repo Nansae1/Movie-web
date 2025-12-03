@@ -6,9 +6,13 @@ import { genreurl } from "@/app/_components/Header";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useState } from "react";
 import { FilteredMovies } from "@/app/_components/FilteredMovies";
 export type Genre = {
@@ -17,11 +21,24 @@ export type Genre = {
 };
 
 export default function Genre() {
-  const { setTheme, theme } = useTheme();
-
   const [genres, setgenres] = useState<Genre[]>([]);
 
-  const { genreIds } = useParams() as { genreIds: string };
+  // const { genreIds } = useParams() as { genreIds: string };
+
+  const searchParams = useSearchParams();
+  const genreIds = searchParams.get("genreIds")?.split(",") || [];
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleClickGenre = (genreId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    const updatedGenreIds = genreIds?.includes(genreId)
+      ? genreIds.filter((id) => id !== genreId)
+      : [...genreIds, genreId];
+    params.set("genreIds", updatedGenreIds.join(","));
+    router.push(pathname + "?" + params);
+  };
 
   const currentGenreName = genres.find(
     (genre) => genre.id === Number(genreIds)
@@ -60,10 +77,16 @@ export default function Genre() {
                   <Link key={genre.id} href={`/genresfilter/${genre.id}`}>
                     <Badge
                       key={index}
-                      className={cn(
-                        "bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2 hover:bg-black hover:text-white",
-                        genre.id === Number(genreIds) && "bg-black text-white"
-                      )}
+                      // className={cn(
+                      //   "bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2 hover:bg-black hover:text-white",
+                      //   genre.id === Number(genreIds) && "bg-black text-white"
+                      // )}
+                      variant={
+                        genreIds.includes(genre.id.toString())
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() => handleClickGenre(genre.id.toString())}
                     >
                       {genre.name} <ChevronRight />
                     </Badge>
@@ -72,10 +95,7 @@ export default function Genre() {
               })}
             </div>
           </div>
-          <FilteredMovies
-            genreIds={genreIds}
-            currentGenreName={currentGenreName}
-          />
+          <FilteredMovies currentGenreName={currentGenreName} />
         </div>
       </div>
       <Footer />

@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import Header from "@/app/_components/Header";
 import Footer from "@/app/_components/Footer";
 import { PaginationCard } from "@/app/_components/PaginationCard";
-import FilteredMovieSkeleton from "@/app/_components/FilteredMovieSkeleton";
+import MorelikethisSkeleton from "@/app/_components/MorelikethisSkeleton";
 
 export default function Page() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -57,7 +57,7 @@ export default function Page() {
                   {loading && (
                     <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
                       {Array.from({ length: 20 }).map((_, index) => (
-                        <FilteredMovieSkeleton key={index} />
+                        <MorelikethisSkeleton key={index} />
                       ))}
                     </div>
                   )}

@@ -14,18 +14,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
 import { MovieCard } from "@/app/_components/MovieCard";
+import CategorySkeleton from "@/app/_components/CategorySkeleton";
 
 export default function Page() {
   const { categoryName } = useParams() as { categoryName: string };
   const [movies, setMovies] = useState<Movie[]>([]);
   const [totalpage, setTotalpage] = useState(1);
   const [currentpage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const title =
     moviesections.find((el) => el.categoryName === categoryName)?.title || "";
 
   useEffect(() => {
     const getMovies = async () => {
+      setLoading(true);
       const apiCategory = categoryName.replace(/-/g, "_");
       const url = `https://api.themoviedb.org/3/movie/${apiCategory}?language=en-US&page=${currentpage}`;
 
@@ -45,6 +48,8 @@ export default function Page() {
 
       setMovies(data.results);
       setTotalpage(data.total_pages);
+
+      setLoading(false);
     };
 
     getMovies();
@@ -62,11 +67,20 @@ export default function Page() {
                   <div className="flex w-full max-w-319.25 justify-between">
                     <p className="text-2xl font-semibold">{title}</p>
                   </div>
-                  <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
-                    {movies?.map((item, index) => (
-                      <MovieCard key={index} movie={item} id={item.id} />
-                    ))}
-                  </div>
+                  {loading && (
+                    <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
+                      {Array.from({ length: 20 }).map((_, index) => (
+                        <CategorySkeleton key={index} />
+                      ))}
+                    </div>
+                  )}
+                  {!loading && (
+                    <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
+                      {movies?.map((item, index) => (
+                        <MovieCard key={index} movie={item} id={item.id} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
