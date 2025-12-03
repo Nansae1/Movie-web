@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SearchInput } from "./SearchInput";
 import { ACCESS_TOKEN } from "./MovieSection";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const genreurl =
   "https://api.themoviedb.org/3/genre/movie/list?language=en";
@@ -33,6 +34,22 @@ export type HeaderProps = {
 export default function Header() {
   const { setTheme, theme } = useTheme();
   const [genres, setgenres] = useState<Genre[]>([]);
+
+  const searchParams = useSearchParams();
+  const genreIds = searchParams.get("genreIds")?.split(",") || [];
+  console.log("aaaaA", genreIds);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleClickGenre = (genreId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    const updatedGenreIds = genreIds?.includes(genreId)
+      ? genreIds.filter((id) => id !== genreId)
+      : [...genreIds, genreId];
+    params.set("genreIds", updatedGenreIds.join(","));
+    router.push("/genresfilter" + "?" + params);
+  };
 
   useEffect(() => {
     const getGenre = async () => {
@@ -75,14 +92,18 @@ export default function Header() {
             <div className="w-full flex flex-wrap gap-4 my-4">
               {genres?.map((genre, index) => {
                 return (
-                  <Link key={genre.id} href={`/genresfilter/${genre.id}`}>
-                    <Badge
-                      key={index}
-                      className="bg-white text-black px-2 border border-[#E4E4E7] text-xs gap-2 hover:bg-black hover:text-white"
-                    >
-                      {genre.name} <ChevronRight />
-                    </Badge>
-                  </Link>
+                  <Badge
+                    key={index}
+                    className="hover:bg-black hover:text-white"
+                    variant={
+                      genreIds.includes(genre.id.toString())
+                        ? "default"
+                        : "outline"
+                    }
+                    onClick={() => handleClickGenre(genre.id.toString())}
+                  >
+                    {genre.name} <ChevronRight />
+                  </Badge>
                 );
               })}
             </div>

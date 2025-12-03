@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ACCESS_TOKEN, Movie } from "./MovieSection";
 import { useEffect, useState } from "react";
@@ -5,11 +6,7 @@ import { PaginationCard } from "./PaginationCard";
 import FilteredMovieSkeleton from "./FilteredMovieSkeleton";
 import { useSearchParams } from "next/navigation";
 
-type MovieCardProps = {
-  currentGenreName?: string;
-};
-
-export const FilteredMovies = ({ currentGenreName }: MovieCardProps) => {
+export const FilteredMovies = () => {
   const [filtermovies, setFiltermovies] = useState<Movie[]>([]);
   const [totalmovie, setTotalmovie] = useState(0);
   const [totalpage, setTotalpage] = useState(1);
@@ -17,9 +14,11 @@ export const FilteredMovies = ({ currentGenreName }: MovieCardProps) => {
 
   const searchParams = useSearchParams();
   const genreIds = searchParams.get("genreIds")?.split(",") || [];
-
+  console.log(genreIds.join(), "agdag");
   const [currentpage, setCurrentPage] = useState(1);
-  const filtermovieurl = `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds.join()}&page=${currentpage}`;
+  const filtermovieurl = `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds
+    .filter((item) => item)
+    .join()}&page=${currentpage}`;
 
   useEffect(() => {
     const getGenre = async () => {
@@ -49,7 +48,7 @@ export const FilteredMovies = ({ currentGenreName }: MovieCardProps) => {
   return (
     <div className="flex flex-col gap-8 pl-4 border-l">
       <p className="text-xl font-semibold">
-        {totalmovie} titles in “{currentGenreName}”
+        {totalmovie} titles in “{genreIds}”
       </p>
       {loading && (
         <div className="grid grid-cols-4 w-201.5 gap-8">
