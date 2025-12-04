@@ -53,7 +53,6 @@ export default function Home() {
     Autoplay({ delay: 1500, stopOnInteraction: true })
   );
 
-  const [showTrailer, setShowTrailer] = useState(false);
   return (
     <div className="h-screen w-screen flex flex-col items-center">
       <div className="flex flex-col gap-6 w-screen justify-center items-center">

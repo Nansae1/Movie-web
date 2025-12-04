@@ -36,6 +36,7 @@ export const FilteredMovies = () => {
         total_results: number;
         total_pages: number;
       };
+
       console.log("gg", data);
       setTotalmovie(data.total_results);
       setTotalpage(data.total_pages);
@@ -45,11 +46,10 @@ export const FilteredMovies = () => {
     };
     getGenre();
   }, [currentpage, genreIds.join()]);
+
   return (
     <div className="flex flex-col gap-8 pl-4 border-l">
-      <p className="text-xl font-semibold">
-        {totalmovie} titles in “{genreIds}”
-      </p>
+      <p className="text-xl font-semibold">{totalmovie} titles</p>
       {loading && (
         <div className="grid grid-cols-4 w-201.5 gap-8">
           {Array.from({ length: 20 }).map((_, index) => (
