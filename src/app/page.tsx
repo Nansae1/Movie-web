@@ -54,26 +54,28 @@ export default function Home() {
   );
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center">
-      <div className="flex flex-col gap-6 w-screen justify-center items-center">
-        <Header />
-        <MovieCarousel />
+    <React.Suspense>
+      <div className="h-screen w-screen flex flex-col items-center">
+        <div className="flex flex-col gap-6 w-screen justify-center items-center">
+          <Header />
+          <MovieCarousel />
+        </div>
+        <div className="w-screen flex flex-col gap-13 my-7">
+          {moviesections.map((s) => {
+            return (
+              <MovieSection
+                key={s.title}
+                title={s.title}
+                url={s.url}
+                path={s.path}
+                categoryName={s.categoryName}
+                showButton={true}
+              />
+            );
+          })}
+        </div>
+        <Footer />
       </div>
-      <div className="w-screen flex flex-col gap-13 my-7">
-        {moviesections.map((s) => {
-          return (
-            <MovieSection
-              key={s.title}
-              title={s.title}
-              url={s.url}
-              path={s.path}
-              categoryName={s.categoryName}
-              showButton={true}
-            />
-          );
-        })}
-      </div>
-      <Footer />
-    </div>
+    </React.Suspense>
   );
 }

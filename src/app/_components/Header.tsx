@@ -13,7 +13,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SearchInput } from "./SearchInput";
 import { ACCESS_TOKEN } from "./MovieSection";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 export const genreurl =
   "https://api.themoviedb.org/3/genre/movie/list?language=en";
