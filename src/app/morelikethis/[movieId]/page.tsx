@@ -79,7 +79,9 @@ export default function Page() {
                                   src="/star.png"
                                   className="h-4.5 w-4"
                                 ></img>
-                                <p className="text-xs">{item.vote_average}</p>
+                                <p className="text-xs">
+                                  {item.vote_average.toFixed(1)}/10
+                                </p>
                               </div>
                               <p className="text-base">{item.title}</p>
                             </div>

@@ -49,7 +49,7 @@ export const Morelikethiscard = ({ movieId, moviesurl }: MovieProps) => {
                 <div className="flex flex-col mx-2">
                   <div className="flex gap-2 items-center">
                     <img src="/star.png" className="h-4.5 w-4"></img>
-                    <p className="text-xs">{item.vote_average}</p>
+                    <p className="text-xs">{item.vote_average.toFixed(1)}</p>
                   </div>
                   <p className="text-base">{item.title}</p>
                 </div>

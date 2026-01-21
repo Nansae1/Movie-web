@@ -59,7 +59,7 @@ export default function Page() {
                 <div className="flex items-center">
                   <img src="/star.png" className="h-7 w-7"></img>
                   <div className="flex flex-col">
-                    <p className="text-lg">{movie?.vote_average}</p>
+                    <p className="text-lg">{movie?.vote_average.toFixed(1)}</p>
                     <p className="text-xs">{movie?.vote_count}</p>
                   </div>
                 </div>

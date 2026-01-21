@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="py-10 px-15 w-full max-w-360 bg-[#4338CA] flex gap-122.25 my-7">
+    <div className="py-10 px-15 w-full bg-[#4338CA] flex gap-122.25 my-7 justify-center">
       <div className="flex flex-col gap-3">
         <div className="flex gap-2 items-center">
           <img src="/Vector (7).png" className="h-5 w-5"></img>

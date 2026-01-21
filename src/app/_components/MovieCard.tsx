@@ -17,7 +17,7 @@ export const MovieCard = ({ movie, id }: MovieCardProps) => {
         <div className="flex flex-col mx-2">
           <div className="flex gap-2 items-center">
             <img src="/star.png" className="h-4.5 w-4"></img>
-            <p className="text-xs ">{movie.vote_average}/10</p>
+            <p className="text-xs "> {movie.vote_average.toFixed(1)}/10</p>
           </div>
           <p className="text-base">{movie.title}</p>
         </div>

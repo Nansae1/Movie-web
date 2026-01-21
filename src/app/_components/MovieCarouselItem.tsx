@@ -30,7 +30,7 @@ export const MovieCarouselItem = ({ movie }: MovieCarouselItemProps) => {
                 <div className="flex gap-2 items-center">
                   <img src="/star.png" className="h-4.5 w-4" />
                   <p className="text-base text-white">
-                    {movie.vote_average}/10
+                    {movie.vote_average.toFixed(1)}/10
                   </p>
                 </div>
               </div>
