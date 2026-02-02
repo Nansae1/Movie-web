@@ -65,7 +65,7 @@ export default function Page() {
                     <div className="grid grid-cols-5 gap-8 w-full max-w-319.25">
                       {movies?.map((item) => (
                         <Link key={item.id} href={`/movie/${item.id}`}>
-                          <div className="h-93.5 bg-[#F4F4F5] flex flex-col rounded-lg gap-1">
+                          <div className="h-93.5 bg-[#F4F4F5] flex dark:bg-[#27272A] flex-col rounded-lg gap-1">
                             <img
                               className="h-71 w-full rounded-t-lg hover:grayscale-35"
                               src={

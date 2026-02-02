@@ -41,7 +41,7 @@ export const Morelikethiscard = ({ movieId, moviesurl }: MovieProps) => {
         {movies?.slice(0, 5).map((item) => {
           return (
             <Link key={item.id} href={`/movie/${item.id}`}>
-              <div className="h-93.5 bg-[#F4F4F5] flex flex-col rounded-lg gap-1">
+              <div className="h-93.5 bg-[#F4F4F5] dark:bg-[#27272A] flex flex-col rounded-lg gap-1">
                 <img
                   className="h-71 w-full rounded-t-lg hover:grayscale-35"
                   src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
